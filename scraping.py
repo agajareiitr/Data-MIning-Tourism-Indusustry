@@ -18,7 +18,9 @@ def GetHotelLinks():
 #        Getting list of Hotels and its link
 
         for hotel in soup.find_all('a', class_='property_title prominent'):
-            hotels_url.append('www.tripadvisor.in'+hotel.get('href'))
+            hotel_link='https://www.tripadvisor.in'+hotel.get('href')
+            GetHotelData(hotel_link)
+            hotels_url.append('https://www.tripadvisor.in'+hotel.get('href'))
 
         page_number = i*30
         website_url = 'https://www.tripadvisor.in/Hotels-g616028-oa' + str(page_number) + '-Haridwar_Haridwar_District_Uttarakhand-Hotels.html'
@@ -31,14 +33,14 @@ def GetHotelLinks():
     print(len(hotels_url))
 
 
-# GetHotelLinks()
 
-def GetHotelData():
+
+def GetHotelData(hotel_link):
     user_name = []
     comments = []
     DateOfStay = []
     ratings = []
-    hotel_link='https://www.tripadvisor.in/Hotel_Review-g616028-d1882704-Reviews-Hotel_Aditya-Haridwar_Haridwar_District_Uttarakhand.html'
+#    hotel_link='https://www.tripadvisor.in/Hotel_Review-g616028-d1882704-Reviews-Hotel_Aditya-Haridwar_Haridwar_District_Uttarakhand.html'
     hotel_data = requests.get(hotel_link)
     hotel_html_content = hotel_data.content
     soup = BeautifulSoup(hotel_html_content, 'html.parser')
@@ -54,19 +56,12 @@ def GetHotelData():
         ratings.append(int(re.search(r'\d+', str(rating)).group()))
 
 
-
-
     for i in range(len(user_name)):
 
         print("Name : "+user_name[i]+'\n'+'Hotel Name : '+hotel_name+'\n'+"Comment: "+comments[i]+'\n'+DateOfStay[i])
         print("rating : "+str(int(ratings[i]/10))+' out of 5')
         print('---------------------------------------------------------------')
 
-GetHotelData()
 
 
-#line ='<div class="location-review-review-list-parts-RatingLine__bubbles--GcJvM" data-test-target="review-rating"><span class="ui_bubble_rating bubble_50"></span></div>'
-#print(int(re.search(r'\d+', line).group()))
-
-
-
+GetHotelLinks()
